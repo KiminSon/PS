@@ -3,18 +3,21 @@
 using namespace std;
 using ll = long long;
 
-int n, k, ans = 0;
+int n, k, dp[101][100001];
 pair<int, int> w[101], b[101];
 
-void sol(int i, int cur, int sum) {
-    if (i == n) {
-        ans = max(sum, ans);
-        return;
-    }
-    if (cur + w[i + 1].first <= k)
-        sol(i + 1, cur + w[i + 1].first, sum + w[i + 1].second);
-    if (cur + b[i + 1].first <= k)
-        sol(i + 1, cur + b[i + 1].first, sum + b[i + 1].second);
+int sol(int i, int t) {
+    if (i == n)
+        return 0;
+    int &ret = dp[i][t];
+    if (ret)
+        return ret;
+    ret = -1e9;
+    if (t - w[i].first >= 0)
+        ret = max(ret, sol(i + 1, t - w[i].first) + w[i].second);
+    if (t - b[i].first >= 0)
+        ret = max(ret, sol(i + 1, t - b[i].first) + b[i].second);
+    return ret;
 }
 
 int main() {
@@ -27,6 +30,5 @@ int main() {
     for (int i = 0; i < n; i++) {
         cin >> w[i].first >> w[i].second >> b[i].first >> b[i].second;
     }
-    sol(-1, 0, 0);
-    cout << ans;
+    cout << sol(0, k);
 }
