@@ -1,4 +1,6 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -8,8 +10,6 @@ int dx2[] = {-1, -1, 1, 1};
 int dy2[] = {1, -1, 1, -1};
 
 int main() {
-    ios::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
-
     int t;
     cin >> t;
     for (int tc = 1; tc <= t; tc++) {
