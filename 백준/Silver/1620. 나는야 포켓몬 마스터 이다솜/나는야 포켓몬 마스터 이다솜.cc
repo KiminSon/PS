@@ -9,21 +9,22 @@ int main() {
     freopen("../input.txt", "r", stdin);
     freopen("../output.txt", "w", stdout);
 #endif
-    map<string, int> ms;
-    map<int, string> mi;
     int n, m;
-    string s;
     cin >> n >> m;
-    for (int i = 1; i <= n; i++) {
+    vector<string> v(n);
+    map<string, int> mp;
+    string s;
+    for (int i = 0; i < n; i++) {
         cin >> s;
-        ms.insert({s, i});
-        mi.insert({i, s});
+        mp[s] = i;
+        v[i] = s;
     }
     for (int i = 0; i < m; i++) {
         cin >> s;
-        if ((int) s[0] < 58)
-            cout << mi[stoi(s)] << '\n';
-        else
-            cout << ms[s] << '\n';
+        if ((int) s[0] < 58) {
+            cout << v[stoi(s) - 1] << '\n';
+        } else {
+            cout << mp[s] + 1 << '\n';
+        }
     }
 }
