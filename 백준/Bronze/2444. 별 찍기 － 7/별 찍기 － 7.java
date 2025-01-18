@@ -1,28 +1,39 @@
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        int n = in.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+
+        int n = Integer.parseInt(br.readLine());
+
         for (int i = 0; i < n; i++) {
-            for (int j = n - i; j > 1; j--) {
-                System.out.print(" ");
+            for (int j = i; j < n - 1; j++) {
+                sb.append(' ');
             }
-            System.out.print("*");
-            for (int j = 0; j < i * 2; j++) {
-                System.out.print("*");
+            for (int j = 0; j < i + 1; j++) {
+                sb.append('*');
             }
-            System.out.print("\n");
+            for (int j = 0; j < i; j++) {
+                sb.append('*');
+            }
+            sb.append('\n');
         }
-        for (int i = n - 2; i > -1; i--) {
-            for (int j = n - i; j > 1; j--) {
-                System.out.print(" ");
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < i + 1; j++) {
+                sb.append(' ');
             }
-            System.out.print("*");
-            for (int j = 0; j < i * 2; j++) {
-                System.out.print("*");
+            for (int j = 0; j < n - 1 - i; j++) {
+                sb.append('*');
             }
-            System.out.print("\n");
+            for (int j = 0; j < n - 2 - i; j++) {
+                sb.append('*');
+            }
+            sb.append('\n');
         }
+
+        System.out.print(sb.toString());
     }
 }
