@@ -41,7 +41,12 @@ public class Main {
             }
         }
 
-        print(sb);
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                sb.append(arr[i][j] + " ");
+            }
+            sb.append("\n");
+        }
     }
 
     public static void make4(StringBuilder sb) {
@@ -67,7 +72,12 @@ public class Main {
             }
         }
 
-        print(sb);
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                sb.append(arr[i][j] + " ");
+            }
+            sb.append('\n');
+        }
 
     }
 
@@ -142,15 +152,11 @@ public class Main {
             }
         }
 
-        print(sb);
-    }
-
-    public static void print(StringBuilder sb) {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 sb.append(arr[i][j] + " ");
             }
-            sb.append('\n');
+            sb.append("\n");
         }
     }
 }
