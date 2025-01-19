@@ -3,16 +3,18 @@
 using namespace std;
 using ll = long long;
 
-ll A, B, c;
+ll a, b, c;
 
-ll power(ll a, ll b) {
-    if (b == 1)
+ll f(ll a, ll b) {
+    if (b == 1) {
         return a % c;
-    ll tmp = power(a, b / 2) % c;
-    if (b % 2 == 0)
-        return (tmp * tmp) % c;
-    else
-        return ((((a % c) * tmp) % c) * tmp) % c;
+    }
+    ll tmp = f(a, b / 2);
+    tmp = (tmp * tmp) % c;
+    if (b % 2) {
+        tmp = (tmp * a) % c;
+    }
+    return tmp;
 }
 
 int main() {
@@ -21,6 +23,6 @@ int main() {
     freopen("../input.txt", "r", stdin);
     freopen("../output.txt", "w", stdout);
 #endif
-    cin >> A >> B >> c;
-    cout << power(A, B);
+    cin >> a >> b >> c;
+    cout << f(a, b);
 }
