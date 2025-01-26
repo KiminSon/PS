@@ -3,56 +3,60 @@
 using namespace std;
 using ll = long long;
 
-int a[50][2];
+int arr[26][2] = {-2,};
 
-void preorder(int n) {
-    if (n == -1)
+void pre(int node) {
+    if (node < 0) {
         return;
-    cout << (char) (n + 'A');
-    preorder(a[n][0]);
-    preorder(a[n][1]);
+    }
+    cout << (char) (node + 'A');
+    pre(arr[node][0]);
+    pre(arr[node][1]);
 }
 
-void inorder(int n) {
-    if (n == -1)
+void in(int node) {
+    if (node < 0) {
         return;
-    inorder(a[n][0]);
-    cout << (char) (n + 'A');
-    inorder(a[n][1]);
+    }
+    in(arr[node][0]);
+    cout << (char) (node + 'A');
+    in(arr[node][1]);
 }
 
-void postorder(int n) {
-    if (n == -1)
+void po(int node) {
+    if (node < 0) {
         return;
-    postorder(a[n][0]);
-    postorder(a[n][1]);
-    cout << (char) (n + 'A');
+    }
+    po(arr[node][0]);
+    po(arr[node][1]);
+    cout << (char) (node + 'A');
 }
 
 int main() {
-    ios::sync_with_stdio(0), cin.tie(0), cout.tie(0);
+    ios::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
 #ifndef ONLINE_JUDGE
     freopen("../input.txt", "r", stdin);
     freopen("../output.txt", "w", stdout);
 #endif
     int n;
-    char x, y, z;
     cin >> n;
-    while (n--) {
-        cin >> x >> y >> z;
-        x = x - 'A';
-        if (y == '.')
-            a[x][0] = -1;
-        else
-            a[x][0] = y - 'A';
-        if (z == '.')
-            a[x][1] = -1;
-        else
-            a[x][1] = z - 'A';
+    for (int i = 0; i < n; i++) {
+        char c1, c2, c3;
+        cin >> c1 >> c2 >> c3;
+        if (c2 == '.') {
+            arr[c1 - 'A'][0] = -1;
+        } else {
+            arr[c1 - 'A'][0] = c2 - 'A';
+        }
+        if (c3 == '.') {
+            arr[c1 - 'A'][1] = -1;
+        } else {
+            arr[c1 - 'A'][1] = c3 - 'A';
+        }
     }
-    preorder(0);
+    pre(0);
     cout << '\n';
-    inorder(0);
+    in(0);
     cout << '\n';
-    postorder(0);
+    po(0);
 }
