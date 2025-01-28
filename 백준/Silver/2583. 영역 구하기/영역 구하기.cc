@@ -3,28 +3,23 @@
 using namespace std;
 using ll = long long;
 
-int m, n, k;
-bool board[100][100];
-bool visited[100][100];
-int dr[] = {0, 0, 1, -1};
-int dc[] = {1, -1, 0, 0};
+int dx[] = {0, 0, 1, -1};
+int dy[] = {1, -1, 0, 0};
+int arr[100][100] = {0,};
+vector<int> v;
+int n, m, k, cnt = 0, s = 0;
 
-int dfs(int r, int c) {
-    if (visited[r][c])
-        return 0;
-    visited[r][c] = 1;
-
-    int ret = 1;
+void dfs(int x, int y) {
+    arr[x][y] = 1;
+    s++;
     for (int i = 0; i < 4; i++) {
-        int nr = r + dr[i];
-        int nc = c + dc[i];
-        if (nr < 0 || nr >= m || nc < 0 || nc >= n)
+        int nx = x + dx[i];
+        int ny = y + dy[i];
+        if (nx < 0 || nx >= n || ny < 0 || ny >= m || arr[nx][ny] == 1) {
             continue;
-        if (visited[nr][nc] || board[nr][nc])
-            continue;
-        ret += dfs(nr, nc);
+        }
+        dfs(nx, ny);
     }
-    return ret;
 }
 
 int main() {
@@ -33,24 +28,29 @@ int main() {
     freopen("../input.txt", "r", stdin);
     freopen("../output.txt", "w", stdout);
 #endif
-    cin >> m >> n >> k;
+    cin >> n >> m >> k;
     for (int i = 0; i < k; i++) {
-        int sx, sy, ex, ey;
-        cin >> sx >> sy >> ex >> ey;
-        for (int r = sy; r < ey; r++)
-            for (int c = sx; c < ex; c++)
-                board[r][c] = 1;
-    }
-    vector<int> ans;
-    for (int i = 0; i < m; i++)
-        for (int j = 0; j < n; j++) {
-            if (board[i][j] || visited[i][j])
-                continue;
-            ans.push_back(dfs(i, j));
+        int x1, y1, x2, y2;
+        cin >> x1 >> y1 >> x2 >> y2;
+        for (int x = x1; x < x2; x++) {
+            for (int y = y1; y < y2; y++) {
+                arr[y][x] = 1;
+            }
         }
-
-    sort(ans.begin(), ans.end());
-    cout << ans.size() << '\n';
-    for (auto &i: ans)
+    }
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            if (arr[i][j] == 0) {
+                s = 0;
+                cnt++;
+                dfs(i, j);
+                v.push_back(s);
+            }
+        }
+    }
+    sort(v.begin(), v.end());
+    cout << cnt << '\n';
+    for (auto &i: v) {
         cout << i << ' ';
+    }
 }
