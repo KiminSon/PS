@@ -4,30 +4,34 @@ using namespace std;
 using ll = long long;
 
 int main() {
-    ios::sync_with_stdio(0), cin.tie(0), cout.tie();
+    ios::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
 #ifndef ONLINE_JUDGE
     freopen("../input.txt", "r", stdin);
     freopen("../output.txt", "w", stdout);
 #endif
     int n;
     cin >> n;
-    for (int i = 0; i < n; i++) {
-        string s;
+    while (n--) {
         stack<char> st;
-        string ans = "YES";
+        string s;
         cin >> s;
-        for (int j = 0; j < s.size(); j++) {
-            if (s[j] == '(')
-                st.push(s[j]);
-            else if (!st.empty() && s[j] == ')' && st.top() == '(')
-                st.pop();
-            else {
-                ans = "NO";
-                break;
+        for (int i = 0; i < s.size(); i++) {
+            if (s[i] == '(') {
+                st.push(s[i]);
+            }
+            if (s[i] == ')') {
+                if (st.size() && st.top() == '(') {
+                    st.pop();
+                } else {
+                    st.push(s[i]);
+                    break;
+                }
             }
         }
-        if (!st.empty())
-            ans = "NO";
-        cout << ans << '\n';
+        if (st.empty()) {
+            cout << "YES\n";
+        } else {
+            cout << "NO\n";
+        }
     }
 }
