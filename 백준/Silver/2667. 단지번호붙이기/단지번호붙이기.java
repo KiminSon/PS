@@ -63,9 +63,9 @@ public class Main {
         Collections.sort(lst);
 
         StringBuilder sb = new StringBuilder();
-        sb.append(lst.size() + "\n");
+        sb.append(lst.size()).append("\n");
         for (int i = 0; i < lst.size(); i++) {
-            sb.append(lst.get(i) + "\n");
+            sb.append(lst.get(i)).append("\n");
         }
         System.out.println(sb.toString());
     }
