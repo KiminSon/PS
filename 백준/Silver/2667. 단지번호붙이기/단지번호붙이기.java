@@ -3,11 +3,11 @@ import java.util.*;
 
 public class Main {
 
-    static int n, m;
+    static int n;
     static int[][] arr;
     static boolean[][] visited;
-    static int[] dx = { 0, 0, 1, -1 };
-    static int[] dy = { 1, -1, 0, 0 };
+    static int[] dx = {0, 0, 1, -1};
+    static int[] dy = {1, -1, 0, 0};
 
     public static class loc {
         int x;
@@ -42,10 +42,7 @@ public class Main {
                         for (int k = 0; k < 4; k++) {
                             int nx = cur.x + dx[k];
                             int ny = cur.y + dy[k];
-                            if (nx < 0 || nx >= n || ny < 0 || ny >= n) {
-                                continue;
-                            }
-                            if (visited[nx][ny] || arr[nx][ny] == 0) {
+                            if (nx < 0 || nx >= n || ny < 0 || ny >= n || visited[nx][ny] || arr[nx][ny] == 0) {
                                 continue;
                             }
                             visited[nx][ny] = true;
@@ -62,9 +59,10 @@ public class Main {
         }
         Collections.sort(lst);
 
+        int sz = lst.size();
         StringBuilder sb = new StringBuilder();
-        sb.append(lst.size()).append("\n");
-        for (int i = 0; i < lst.size(); i++) {
+        sb.append(sz).append("\n");
+        for (int i = 0; i < sz; i++) {
             sb.append(lst.get(i)).append("\n");
         }
         System.out.println(sb.toString());
