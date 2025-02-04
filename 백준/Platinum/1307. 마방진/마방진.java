@@ -43,7 +43,7 @@ public class Main {
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                sb.append(arr[i][j] + " ");
+                sb.append(arr[i][j]).append(" ");
             }
             sb.append("\n");
         }
@@ -74,7 +74,7 @@ public class Main {
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                sb.append(arr[i][j] + " ");
+                sb.append(arr[i][j]).append(" ");
             }
             sb.append('\n');
         }
@@ -154,7 +154,7 @@ public class Main {
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                sb.append(arr[i][j] + " ");
+                sb.append(arr[i][j]).append(" ");
             }
             sb.append("\n");
         }
