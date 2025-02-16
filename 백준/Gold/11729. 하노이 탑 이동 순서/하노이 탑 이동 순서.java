@@ -1,4 +1,3 @@
-import java.math.*;
 import java.io.*;
 
 public class Main {
@@ -9,18 +8,10 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
 
-        BigInteger bi = new BigInteger("1");
-        BigInteger bitwo = new BigInteger("2");
-        BigInteger bione = new BigInteger("1");
-        for (int i = 0; i < n; i++) {
-            bi = bi.multiply(bitwo);
-        }
-        bi = bi.subtract(bione);
-        sb.append(bi).append("\n");
+        int cnt = (1 << n) - 1;
+        sb.append(cnt).append("\n");
 
-        if (n <= 20) {
-            h(1, 2, 3, n);
-        }
+        h(1, 2, 3, n);
 
         System.out.print(sb);
     }
@@ -28,7 +19,6 @@ public class Main {
     static void h(int s, int m, int e, int n) {
         if (n == 1) {
             sb.append(s).append(" ").append(e).append("\n");
-
         } else {
             h(s, e, m, n - 1);
             sb.append(s).append(" ").append(e).append("\n");
