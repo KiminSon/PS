@@ -38,6 +38,6 @@ public class Main {
         }
         StringBuilder sb = new StringBuilder();
         sb.append(cnt);
-        System.out.print(cnt);
+        System.out.print(sb);
     }
 }
