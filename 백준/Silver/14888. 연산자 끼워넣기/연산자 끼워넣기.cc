@@ -3,48 +3,43 @@
 using namespace std;
 using ll = long long;
 
-int n;
-int a[11];
-int o[0];
-int mi = 1000000001;
-int ma = -1000000001;
+int n, mn = 2e9, mx = -2e9;
+int arr[11];
 
-void g(int r, int id) {
-    if (id == n) {
-        if (r > ma)
-            ma = r;
-        if (r < mi)
-            mi = r;
+void f(int depth, int ans, int add, int dif, int mux, int div) {
+    if (depth == n) {
+        mn = min(mn, ans);
+        mx = max(mx, ans);
         return;
     }
-    for (int i = 0; i < 4; i++) {
-        if (o[i] > 0) {
-            o[i]--;
-            if (i == 0)
-                g(r + a[id], id + 1);
-            else if (i == 1)
-                g(r - a[id], id + 1);
-            else if (i == 2)
-                g(r * a[id], id + 1);
-            else
-                g(r / a[id], id + 1);
-            o[i]++;
-        }
+    if (add > 0) {
+        f(depth + 1, ans + arr[depth], add - 1, dif, mux, div);
     }
-    return;
+    if (dif > 0) {
+        f(depth + 1, ans - arr[depth], add, dif - 1, mux, div);
+    }
+    if (mux > 0) {
+        f(depth + 1, ans * arr[depth], add, dif, mux - 1, div);
+    }
+    if (div > 0) {
+        f(depth + 1, ans / arr[depth], add, dif, mux, div - 1);
+    }
 }
 
 int main() {
-    ios::sync_with_stdio(0), cin.tie(0), cout.tie();
+    ios::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
 #ifndef ONLINE_JUDGE
     freopen("../input.txt", "r", stdin);
     freopen("../output.txt", "w", stdout);
 #endif
     cin >> n;
-    for (int i = 0; i < n; i++)
-        cin >> a[i];
-    for (int i = 0; i < 4; i++)
-        cin >> o[i];
-    g(a[0], 1);
-    cout << ma << '\n' << mi;
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+    int tmp[4];
+    for (int i = 0; i < 4; i++) {
+        cin >> tmp[i];
+    }
+    f(1, arr[0], tmp[0], tmp[1], tmp[2], tmp[3]);
+    cout << mx << '\n' << mn;
 }
