@@ -3,7 +3,7 @@
 using namespace std;
 using ll = long long;
 int n, m, h, cnt = 4, cn, vsz;
-int arr[32][32];
+int arr[12][32];
 vector<pair<int, int> > v;
 
 bool isCan() {
@@ -24,11 +24,11 @@ bool isCan() {
 }
 
 void f(int d, int nxt) {
-    if (d >= cnt || d > 3) {
+    if (d >= cnt) {
         return;
     }
     if (isCan()) {
-        cnt = min(d, cnt);
+        cnt = d;
         return;
     }
 
