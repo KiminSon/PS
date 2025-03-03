@@ -24,18 +24,18 @@ public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
-        pt[] arr = new pt[n];
+        PriorityQueue<pt> pq = new PriorityQueue<>();
         for (int i = 0; i < n; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
-            arr[i] = new pt(a, b);
+            pq.add(new pt(a, b));
         }
-        Arrays.sort(arr);
         int cnt = 0, cur = -1;
-        for (pt i : arr) {
-            if (i.st >= cur) {
-                cur = i.ed;
+        for (int i = 0; i < n; i++) {
+            pt tmp = pq.poll();
+            if (tmp.st >= cur) {
+                cur = tmp.ed;
                 cnt++;
             }
         }
