@@ -1,43 +1,21 @@
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        int ans = 0;
-        int n = in.nextInt();
-        while (true) {
-            if (64 == n) {
-                ans++;
-                break;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = 64, cnt = 0, x = Integer.parseInt(br.readLine());
+        while (x > 0) {
+            if (x >= n) {
+                x -= n;
+                cnt++;
             }
-            if (n >= 32) {
-                ans++;
-                n -= 32;
-            }
-            if (n >= 16) {
-                ans++;
-                n -= 16;
-            }
-            if (n >= 8) {
-                ans++;
-                n -= 8;
-            }
-            if (n >= 4) {
-                ans++;
-                n -= 4;
-            }
-            if (n >= 2) {
-                ans++;
-                n -= 2;
-            }
-            if (n >= 1) {
-                ans++;
-                n -= 1;
-            }
-            if (n == 0) {
-                break;
-            }
+            n >>= 1;
         }
-        System.out.println(ans);
+        StringBuilder sb = new StringBuilder();
+        sb.append(cnt);
+        System.out.print(sb);
     }
 }
