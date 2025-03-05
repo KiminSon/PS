@@ -1,46 +1,47 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Main {
-
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int[] arr = new int[26];
         String s = br.readLine();
-        char c = 'a';
         int sz = s.length();
+        
         for (int i = 0; i < sz; i++) {
             arr[s.charAt(i) - 'A']++;
         }
+
         int odd = 0;
+        char oddChar = 0;
         for (int i = 0; i < 26; i++) {
             if ((arr[i] & 1) == 1) {
                 odd++;
-                c = (char) (i + 'A');
+                oddChar = (char) (i + 'A');
+                if (odd > 1) {
+                    System.out.print("I'm Sorry Hansoo");
+                    return;
+                }
                 arr[i]--;
             }
         }
-        StringBuilder sb = new StringBuilder();
-        if (odd > 1) {
-            sb.append("I'm Sorry Hansoo");
-        } else {
-            for (int i = 0; i < 26; i++) {
-                if (arr[i] != 0) {
-                    for (int j = 0; j < arr[i] / 2; j++) {
-                        sb.append((char) (i + 'A'));
-                    }
-                }
+        
+        char[] result = new char[sz];
+        int left = 0, right = sz - 1;
+        
+        for (int i = 0; i < 26; i++) {
+            while (arr[i] > 0) {
+                result[left++] = (char) (i + 'A');
+                result[right--] = (char) (i + 'A');
+                arr[i] -= 2;
             }
-            StringBuilder tmp = new StringBuilder(sb);
-            if (c != 'a') {
-                tmp.append(c);
-            }
-            sb.reverse();
-            tmp.append(sb);
-
-            sb = tmp;
         }
-        System.out.print(sb);
-    }
 
+        if (oddChar != 0) {
+            result[left] = oddChar;
+        }
+
+        System.out.print(result);
+    }
 }
