@@ -14,7 +14,7 @@ public class Main {
 
     static int n;
     static int[] arr = new int[3];
-    static boolean[][][] visited = new boolean[61][61][61];
+    static boolean[][][] visited;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -23,6 +23,7 @@ public class Main {
         for (int i = 0; i < n; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
+        visited = new boolean[arr[0] + 1][arr[1] + 1][arr[2] + 1];
         Queue<int[]> q = new ArrayDeque<>();
         visited[arr[0]][arr[1]][arr[2]] = true;
         q.add(new int[]{arr[0], arr[1], arr[2], 1});
@@ -41,7 +42,7 @@ public class Main {
                     continue;
                 }
                 visited[nx][ny][nz] = true;
-                if (nz == 0 && ny == 0 && nx == 0) {
+                if (nx == 0 && ny == 0 && nz == 0) {
                     System.out.println(cnt);
                     return;
                 }
