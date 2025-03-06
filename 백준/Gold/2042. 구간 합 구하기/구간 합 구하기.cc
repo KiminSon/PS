@@ -3,79 +3,92 @@
 using namespace std;
 using ll = long long;
 
-ll sum;
-vector<pair<ll, pair<ll, ll>>> segtree(4097153);
+struct Seg {
+    vector<ll> seg, arr;
+    ll leafSize, l, r, idx, val;
 
-void findsum(ll idx, ll start, ll end) {
-    // 완전 포함되면 sum추가 후 종료
-    if (segtree[idx].second.first >= start && segtree[idx].second.second <= end) {
-        sum += segtree[idx].first;
-        return;
+    Seg(int initSize) {
+        int h = (int) ceil(log2(initSize));
+        int sz = 2 << h;
+        arr.resize(initSize);
+        seg.resize(sz);
+        leafSize = initSize;
     }
-    // idx의 끝이 처음보다 작거나, 처음이 끝보다 크면 리턴
-    if (segtree[idx].second.first > end || segtree[idx].second.second < start)
-        return;
 
-    // 재귀
-    findsum(idx * 2, start, end);
-    findsum(idx * 2 + 1, start, end);
-}
+    void init(int n, int s, int e) {
+        if (s == e) {
+            seg[n] = arr[s];
+            return;
+        }
+        int mid = (s + e) / 2;
+        init(n * 2, s, mid);
+        init(n * 2 + 1, mid + 1, e);
+        seg[n] = seg[n * 2] + seg[n * 2 + 1];
+    }
+
+    ll segQuery(int left, int right) {
+        l = left - 1;
+        r = right - 1;
+
+        return query(1, 0, leafSize - 1);
+    }
+
+    ll query(int n, int s, int e) {
+        if (l > e || r < s) {
+            return 0;
+        }
+        if (l <= s && e <= r) {
+            return seg[n];
+        }
+        int mid = (s + e) / 2;
+        ll lsum = query(n * 2, s, mid);
+        ll rsum = query(n * 2 + 1, mid + 1, e);
+        return lsum + rsum;
+    }
+
+    void segUpdate(int i, ll v) {
+        idx = i - 1;
+        val = v;
+        update(1, 0, leafSize - 1);
+    }
+
+    void update(int n, int s, int e) {
+        if (idx < s || idx > e) {
+            return;
+        }
+        if (s == e) {
+            seg[n] = val;
+            arr[idx] = val;
+            return;
+        }
+        int mid = (s + e) / 2;
+        update(n * 2, s, mid);
+        update(n * 2 + 1, mid + 1, e);
+        seg[n] = seg[n * 2] + seg[n * 2 + 1];
+    }
+};
 
 int main() {
-    ios::sync_with_stdio(0), cin.tie(0), cout.tie(0);
+    ios::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
 #ifndef ONLINE_JUDGE
     freopen("../input.txt", "r", stdin);
     freopen("../output.txt", "w", stdout);
 #endif
-    ll n, m, treesize;
-    cin >> n >> m >> treesize;
-    m += treesize;
-
-    // 트리 사이즈
-    treesize = pow(2, ceil(log2(n)) + 1); // 16
-    ll idx = treesize / 2; // 8
-    ll realidx = 1;
-
-    // 트리 구성 8부터 5 + 8 = 13까지
-    for (ll i = 0; i < n; i++) { // 있는 노드 입력
-        cin >> segtree[idx].first;
-        segtree[idx].second.first = realidx;
-        segtree[idx].second.second = realidx;
-        idx++;
-        realidx++;
+    int n, m, k;
+    cin >> n >> m >> k;
+    m += k;
+    Seg seg(n);
+    for (auto &i: seg.arr) {
+        cin >> i;
     }
-    for (ll i = 0; i < treesize - n; i++) { // 나머지 노드는 0처리
-        segtree[idx].first = 0;
-        segtree[idx].second.first = realidx;
-        segtree[idx].second.second = realidx;
-        idx++;
-        realidx++;
-    }
-    for (ll i = treesize / 2 - 1; i > 0; i--) { // 부모노드 업데이트
-        segtree[i].first = segtree[2 * i].first + segtree[2 * i + 1].first;
-        segtree[i].second.first = min(segtree[2 * i].second.first, segtree[2 * i + 1].second.first);
-        segtree[i].second.second = max(segtree[2 * i].second.second, segtree[2 * i + 1].second.second);
-    }
-
-    // m+k만큼 반복문 돌림
-    ll a, b, c;
+    seg.init(1, 0, n - 1);
     while (m--) {
+        ll a, b, c;
         cin >> a >> b >> c;
-
-        // 업데이트
         if (a == 1) {
-            b += treesize / 2 - 1;
-            segtree[b].first = c;
-            b /= 2;
-            while (b > 0) {
-                segtree[b].first = segtree[2 * b].first + segtree[2 * b + 1].first;
-                b /= 2;
-            }
-        } // 출력
-        else {
-            sum = 0;
-            findsum(1, b, c);
-            cout << sum << '\n';
+            seg.segUpdate(b, c);
+        } else {
+            cout << seg.segQuery(b, c) << '\n';
         }
     }
 }
