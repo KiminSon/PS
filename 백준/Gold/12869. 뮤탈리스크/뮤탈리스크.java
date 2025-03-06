@@ -14,9 +14,9 @@ public class Main {
 
     static int n;
     static int[] arr = new int[3];
-    static int[][][] visited = new int[61][61][61];
+    static boolean[][][] visited = new boolean[61][61][61];
 
-    public static void main(String args[]) throws Exception {
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         n = Integer.parseInt(br.readLine());
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -24,28 +24,28 @@ public class Main {
             arr[i] = Integer.parseInt(st.nextToken());
         }
         Queue<int[]> q = new ArrayDeque<>();
-        visited[arr[0]][arr[1]][arr[2]] = 1;
-        q.add(new int[]{arr[0], arr[1], arr[2]});
+        visited[arr[0]][arr[1]][arr[2]] = true;
+        q.add(new int[]{arr[0], arr[1], arr[2], 1});
         while (!q.isEmpty()) {
-            if (visited[0][0][0]-- > 0) {
-                StringBuilder sb = new StringBuilder();
-                sb.append(visited[0][0][0]);
-                System.out.print(sb);
-                return;
-            }
             int[] cur = q.poll();
             int x = cur[0];
             int y = cur[1];
             int z = cur[2];
+            int cnt = cur[3];
             for (int i = 0; i < 6; i++) {
-                int nx = Math.max(0, x - d[i][0]);
-                int ny = Math.max(0, y - d[i][1]);
-                int nz = Math.max(0, z - d[i][2]);
-                if (visited[nx][ny][nz] > 0) {
+                int nx = x - d[i][0] < 0 ? 0 : x - d[i][0];
+                int ny = y - d[i][1] < 0 ? 0 : y - d[i][1];
+                int nz = z - d[i][2] < 0 ? 0 : z - d[i][2];
+
+                if (visited[nx][ny][nz]) {
                     continue;
                 }
-                visited[nx][ny][nz] = visited[x][y][z] + 1;
-                q.add(new int[]{nx, ny, nz});
+                visited[nx][ny][nz] = true;
+                if (nz == 0 && ny == 0 && nx == 0) {
+                    System.out.println(cnt);
+                    return;
+                }
+                q.add(new int[]{nx, ny, nz, cnt + 1});
             }
         }
     }
