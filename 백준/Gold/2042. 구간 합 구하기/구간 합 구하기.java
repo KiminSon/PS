@@ -1,80 +1,98 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    static long[] arr, segmentTree;
-    static int left, right, index;
-    static long value;
 
-    public static void main(String args[]) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
+    static class Seg {
+        long[] seg, arr;
+        int size, l, r, idx;
+        long val;
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int m = Integer.parseInt(st.nextToken());
-        int k = Integer.parseInt(st.nextToken());
-
-        arr = new long[n];
-        for (int i = 0; i < n; i++) {
-            arr[i] = Long.parseLong(br.readLine());
+        Seg(int n) {
+            size = n;
+            int h = (int) Math.ceil(Math.log(n) / Math.log(2));
+            int segSize = 2 << h;
+            arr = new long[n];
+            seg = new long[segSize];
         }
 
-        int height = (int) Math.ceil(Math.log(n) / Math.log(2));
-        int treeSize = 1 << (height + 1);
-        segmentTree = new long[treeSize];
-        init(1, 0, n - 1);
+        void init(int n, int s, int e) {
+            if (s == e) {
+                seg[n] = arr[s];
+                return;
+            }
+            int m = (s + e) / 2;
+            init(n * 2, s, m);
+            init(n * 2 + 1, m + 1, e);
+            seg[n] = seg[n * 2] + seg[n * 2 + 1];
+        }
 
-        for (int i = 0; i < m + k; i++) {
+        void segUpdate(int index, long value) {
+            idx = index;
+            val = value;
+            update(1, 0, size - 1);
+        }
+
+        void update(int n, int s, int e) {
+            if (idx < s || idx > e) {
+                return;
+            }
+            if (s == e) {
+                arr[s] = val;
+                seg[n] = val;
+                return;
+            }
+            int m = (s + e) / 2;
+            update(n * 2, s, m);
+            update(n * 2 + 1, m + 1, e);
+            seg[n] = seg[n * 2] + seg[n * 2 + 1];
+        }
+
+        long segQuery(int left, int right) {
+            l = left;
+            r = right;
+            return query(1, 0, size - 1);
+        }
+
+        long query(int n, int s, int e) {
+            if (l > e || r < s) {
+                return 0;
+            }
+            if (l <= s && e <= r) {
+                return seg[n];
+            }
+            int m = (s + e) / 2;
+            long lVal = query(n * 2, s, m);
+            long rVal = query(n * 2 + 1, m + 1, e);
+            return lVal + rVal;
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken()) + Integer.parseInt(st.nextToken());
+        Seg seg = new Seg(n);
+        for (int i = 0; i < n; i++) {
+            seg.arr[i] = Long.parseLong(br.readLine());
+        }
+        seg.init(1, 0, n - 1);
+        StringBuilder sb = new StringBuilder();
+        while (m-- > 0) {
             st = new StringTokenizer(br.readLine());
             int a = Integer.parseInt(st.nextToken());
             if (a == 1) {
-                index = Integer.parseInt(st.nextToken()) - 1;
-                value = Long.parseLong(st.nextToken());
-                update(1, 0, n - 1);
+                int b = Integer.parseInt(st.nextToken());
+                long c = Long.parseLong(st.nextToken());
+                seg.segUpdate(b - 1, c);
             } else {
-                left = Integer.parseInt(st.nextToken()) - 1;
-                right = Integer.parseInt(st.nextToken()) - 1;
-                sb.append(query(1, 0, n - 1)).append("\n");
+                int b = Integer.parseInt(st.nextToken());
+                int c = Integer.parseInt(st.nextToken());
+                long tmp = seg.segQuery(b - 1, c - 1);
+                sb.append(tmp).append('\n');
             }
         }
         System.out.print(sb);
-    }
-
-    static void init(int node, int start, int end) {
-        if (start == end) {
-            segmentTree[node] = arr[start];
-        } else {
-            init(node * 2, start, (start + end) / 2);
-            init(node * 2 + 1, (start + end) / 2 + 1, end);
-            segmentTree[node] = segmentTree[node * 2] + segmentTree[node * 2 + 1];
-        }
-    }
-
-    static long query(int node, int start, int end) {
-        if (left > end || right < start) {
-            return 0;
-        }
-        if (left <= start && end <= right) {
-            return segmentTree[node];
-        }
-        long leftSum = query(node * 2, start, (start + end) / 2);
-        long rightSum = query(node * 2 + 1, (start + end) / 2 + 1, end);
-        return leftSum + rightSum;
-    }
-
-    static void update(int node, int start, int end) {
-        if (index < start || index > end) {
-            return;
-        }
-        if (start == end) {
-            arr[index] = value;
-            segmentTree[node] = value;
-            return;
-        }
-        update(node * 2, start, (start + end) / 2);
-        update(node * 2 + 1, (start + end) / 2 + 1, end);
-        segmentTree[node] = segmentTree[node * 2] + segmentTree[node * 2 + 1];
     }
 }
