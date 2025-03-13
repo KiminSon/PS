@@ -12,7 +12,7 @@ public class Main {
         int n = Integer.parseInt(st.nextToken());
         int m = Integer.parseInt(st.nextToken());
         int arr[][] = new int[n][m];
-        int v[][] = new int[n][m];
+        boolean v[][] = new boolean[n][m];
         for (int i = 0; i < n; i++) {
             String s = br.readLine();
             for (int j = 0; j < m; j++) {
@@ -22,30 +22,26 @@ public class Main {
 
         Queue<int[]> q = new ArrayDeque<>();
         Queue<int[]> w = new ArrayDeque<>();
-        int d = 0;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 int sz = 0;
-                if (arr[i][j] == 0 && v[i][j] == 0) {
-                    d++;
+                if (arr[i][j] == 0 && !v[i][j]) {
                     q.add(new int[]{i, j});
-                    v[i][j] = d;
+                    v[i][j] = true;
                     sz++;
                     while (!q.isEmpty()) {
                         int[] cur = q.poll();
                         for (int k = 0; k < 4; k++) {
                             int nx = cur[0] + dx[k];
                             int ny = cur[1] + dy[k];
-                            if (nx < 0 || nx >= n || ny < 0 || ny >= m) {
+                            if (nx < 0 || nx >= n || ny < 0 || ny >= m || v[nx][ny]) {
                                 continue;
                             }
-                            if (arr[nx][ny] == 0 && v[nx][ny] == 0) {
-                                v[nx][ny] = d;
+                            v[nx][ny] = true;
+                            if (arr[nx][ny] == 0) {
                                 q.add(new int[]{nx, ny});
                                 sz++;
-                            }
-                            if (arr[nx][ny] != 0 && v[nx][ny] != d) {
-                                v[nx][ny] = d;
+                            } else {
                                 w.add(new int[]{nx, ny});
                             }
                         }
@@ -53,6 +49,7 @@ public class Main {
                     while (!w.isEmpty()) {
                         int[] cur = w.poll();
                         arr[cur[0]][cur[1]] += sz;
+                        v[cur[0]][cur[1]] = false;
                     }
                 }
             }
