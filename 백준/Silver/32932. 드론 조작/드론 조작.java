@@ -9,7 +9,7 @@ public class Main {
         int n = Integer.parseInt(st.nextToken());
         int k = Integer.parseInt(st.nextToken());
         int x = 0, y = 0;
-        Set<String> w = new TreeSet<>();
+        Set<String> w = new HashSet<>();
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
             int a = Integer.parseInt(st.nextToken());
