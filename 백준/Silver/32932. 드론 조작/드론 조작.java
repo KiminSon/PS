@@ -8,7 +8,7 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         int n = Integer.parseInt(st.nextToken());
         int k = Integer.parseInt(st.nextToken());
-        int x = 0, y = 0;
+        int x = 500, y = 500;
         Set<Integer> w = new HashSet<>();
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
@@ -18,37 +18,37 @@ public class Main {
         }
         String s = br.readLine();
         for (int i = 0; i < k; i++) {
-            int nx = x + 500;
-            int ny = y + 500;
+            int nx = x;
+            int ny = y;
 
             if (s.charAt(i) == 'R') {
                 nx++;
                 if (w.contains(nx * 1001 + ny)) {
                     continue;
                 }
-                x = nx - 500;
+                x = nx;
             } else if (s.charAt(i) == 'L') {
                 nx--;
                 if (w.contains(nx * 1001 + ny)) {
                     continue;
                 }
-                x = nx - 500;
+                x = nx;
             } else if (s.charAt(i) == 'U') {
                 ny++;
                 if (w.contains(nx * 1001 + ny)) {
                     continue;
                 }
-                y = ny - 500;
+                y = ny;
             } else {
                 ny--;
                 if (w.contains(nx * 1001 + ny)) {
                     continue;
                 }
-                y = ny - 500;
+                y = ny;
             }
         }
         StringBuilder sb = new StringBuilder();
-        sb.append(x).append(' ').append(y);
+        sb.append(x - 500).append(' ').append(y - 500);
         System.out.print(sb);
     }
 }
