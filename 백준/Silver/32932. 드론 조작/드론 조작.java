@@ -9,48 +9,42 @@ public class Main {
         int n = Integer.parseInt(st.nextToken());
         int k = Integer.parseInt(st.nextToken());
         int x = 0, y = 0;
-        Set<String> w = new HashSet<>();
+        Set<Integer> w = new HashSet<>();
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            w.add(a + "," + b);
+            int a = Integer.parseInt(st.nextToken()) + 500;
+            int b = Integer.parseInt(st.nextToken()) + 500;
+            w.add(a * 1001 + b);
         }
         String s = br.readLine();
         for (int i = 0; i < k; i++) {
-            int nx = x;
-            int ny = y;
+            int nx = x + 500;
+            int ny = y + 500;
 
             if (s.charAt(i) == 'R') {
                 nx++;
-                if (w.contains(nx + "," + ny)) {
+                if (w.contains(nx * 1001 + ny)) {
                     continue;
                 }
-                x = nx;
-            }
-
-            if (s.charAt(i) == 'L') {
+                x = nx - 500;
+            } else if (s.charAt(i) == 'L') {
                 nx--;
-                if (w.contains(nx + "," + ny)) {
+                if (w.contains(nx * 1001 + ny)) {
                     continue;
                 }
-                x = nx;
-            }
-
-            if (s.charAt(i) == 'U') {
+                x = nx - 500;
+            } else if (s.charAt(i) == 'U') {
                 ny++;
-                if (w.contains(nx + "," + ny)) {
+                if (w.contains(nx * 1001 + ny)) {
                     continue;
                 }
-                y = ny;
-            }
-
-            if (s.charAt(i) == 'D') {
+                y = ny - 500;
+            } else {
                 ny--;
-                if (w.contains(nx + "," + ny)) {
+                if (w.contains(nx * 1001 + ny)) {
                     continue;
                 }
-                y = ny;
+                y = ny - 500;
             }
         }
         StringBuilder sb = new StringBuilder();
