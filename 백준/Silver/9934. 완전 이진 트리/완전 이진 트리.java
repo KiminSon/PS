@@ -1,54 +1,40 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayDeque;
-import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-    static class Pt {
-        int idx, depth, sz;
+    static int[] arr;
+    static StringBuilder[] levels;
 
-        Pt(int idx, int depth, int sz) {
-            this.idx = idx;
-            this.depth = depth;
-            this.sz = sz;
-        }
+    static void dfs(int idx, int depth, int sz, int k) {
+        levels[depth].append(arr[idx]).append(' ');
+
+        if (depth == k) return;
+
+        dfs(idx - sz, depth + 1, sz / 2, k);
+        dfs(idx + sz, depth + 1, sz / 2, k);
     }
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int k = Integer.parseInt(br.readLine());
         int n = 1 << k;
-        int[] arr = new int[n];
+        arr = new int[n];
 
         StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 1; i < n; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        Queue<Pt> q = new ArrayDeque<>();
-        q.add(new Pt(n / 2, 1, n / 4));
-
-        int prev = 1;
-        StringBuilder sb = new StringBuilder();
-
-        while (!q.isEmpty()) {
-            Pt cur = q.poll();
-            int idx = cur.idx, depth = cur.depth, sz = cur.sz;
-
-            if (prev < depth) {
-                sb.append('\n');
-                prev++;
-            }
-
-            sb.append(arr[idx]).append(' ');
-
-            if (depth == k) continue;
-
-            q.add(new Pt(idx - sz, depth + 1, sz / 2));
-            q.add(new Pt(idx + sz, depth + 1, sz / 2));
+        levels = new StringBuilder[k + 1];  // 깊이 k까지 존재
+        for (int i = 1; i <= k; i++) {
+            levels[i] = new StringBuilder();
         }
 
-        System.out.print(sb);
+        dfs(n / 2, 1, n / 4, k);  // 루트 노드부터 시작
+
+        for (int i = 1; i <= k; i++) {
+            System.out.println(levels[i].toString().trim());
+        }
     }
 }
