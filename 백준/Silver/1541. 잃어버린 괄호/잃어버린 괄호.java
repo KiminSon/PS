@@ -6,14 +6,15 @@ public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        char[] input = br.readLine().toCharArray();
+        String input = br.readLine();
         String tmp = "";
         int ans = 0;
         boolean minus = false;
 
-        for (int i = 0; i < input.length; i++) {
-            if ('0' <= input[i] && input[i] <= '9') {
-                tmp += input[i];
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            if ('0' <= c && c <= '9') {
+                tmp += c;
             } else {
                 if (minus) {
                     ans -= Integer.parseInt(tmp);
@@ -21,7 +22,7 @@ public class Main {
                     ans += Integer.parseInt(tmp);
                 }
 
-                if (input[i] == '-') {
+                if (c == '-') {
                     minus = true;
                 }
 
