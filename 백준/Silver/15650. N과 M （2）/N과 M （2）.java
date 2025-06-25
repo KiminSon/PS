@@ -4,43 +4,33 @@ import java.util.StringTokenizer;
 
 public class Main {
 
-    static int[] p;
-    static int N, R;
-    static int[] nums;
-    static boolean[] visited;
-    private static StringBuilder sb = new StringBuilder();
+    static int n, m;
+    static int[] arr;
+    static StringBuilder sb = new StringBuilder();
+
+    static void f(int d, int nxt) {
+        if (d == m) {
+            for (int i : arr) {
+                sb.append(i).append(' ');
+            }
+            sb.append('\n');
+            return;
+        }
+        for (int i = nxt; i < n; i++) {
+            arr[d] = i + 1;
+            f(d + 1, i + 1);
+        }
+    }
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        R = Integer.parseInt(st.nextToken());
-        p = new int[N];
-        for (int i = 0; i < N; i++) {
-            p[i] = i + 1;
-        }
-        nums = new int[R];
-        visited = new boolean[N];
-        perm(0, 0);
-        System.out.print(sb.toString());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+        arr = new int[m];
+
+        f(0, 0);
+
+        System.out.print(sb);
     }
-
-    private static void perm(int cnt, int start) {
-        if (R == cnt) {
-            for (int i = 0; i < cnt; i++) {
-                sb.append(nums[i] + " ");
-            }
-            sb.append("\n");
-            return;
-        }
-
-        for (int i = start; i < N; i++) {
-            visited[i] = true;
-            nums[cnt] = p[i];
-            perm(cnt + 1, i + 1);
-            nums[cnt] = 0;
-            visited[i] = false;
-        }
-    }
-
 }
